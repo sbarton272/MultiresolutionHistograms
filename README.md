@@ -5,10 +5,11 @@
 
 ## Constants
 - Number of resolution levels
+- Branching variance
 
 ## Training
 1. Per class, per image perform entropy based pruning
-2. Sepecifically, decend in resolution (spatial), apply histograms (greyscale) to parent and children. Compare max entropy of children to parent and select the larger entropy resolution.
+2. Sepecifically, decend in resolution (spatial), apply histograms (greyscale) to parent and children. Compare max entropy of children to parent energies. If children have too much of an uneven energy spread then select parent. If the spread the spread is uneven this implies the parent is as good as the children.
 2. Continue entering resolutions until at minimum level or entropy convergence (like a breadth first search with children as frontier).
 3. Now construct resolution structures per class
 4. Structure is determined by voting on images in class. Most common resolution levels are picked.
