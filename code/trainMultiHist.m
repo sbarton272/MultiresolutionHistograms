@@ -1,4 +1,7 @@
 function model = trainMultiHist(trainImgNames, trainLabels, consts)
+% Note: this functions assumes that trainImgNames has all images for class
+% 1 first, all images for class 2 after, etc etc
+
 
 %% Compute class structures
 % This creates two matrices: 
@@ -13,13 +16,16 @@ classStructureVotingProb = 0.5;
 classStructures = [];
 classProbs = [];
 
-for class
+name_loc = 1;
+for class = 1:length(unique(trainLabels))
     classDecomps = []; % All image decompositions just for this class
-    for img
-    %% Compute structure
-    structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
-        consts.PRUNING_VAR_THRESH);
-    classDecomps = [classDecomps structure];
+    for imgNo = 1:sum(trainLabels == class);
+        I = imread(trainImgNames{name_loc});
+        name_loc = name_loc + 1;
+        % Compute structure
+        structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
+                                        consts.PRUNING_VAR_THRESH);
+        classDecomps = [classDecomps structure];
     end
     
     %% Determine NB prob for this class
@@ -38,19 +44,22 @@ for class
 end
 
 %% Feature extraction for all images
-for class
+for class = 1:length(unique(trainLabels))
+    % Compute feature vector for every image given the class structure
     classStructure = classStructures(:,class);
-    for img
-    
-        %% Compute feature vector
+    featureVectors = [];
+    for imgNo = 1:size(trainLabels, 1);
+        I = imread(trainImgNames{imageNo});
+        % Compute feature vector
         featureVect = computeFeatureVect(I, classStructure);
-        
+        featureVectors = [featureVect featureVectors];
     end
+    
+    % Train an SVM for this class using feature vectors and class labels
 end
-
-%% Train SVM per class
 
 
 %% Package model
+% Include class structures, class probs, and all the svms
 
 end
