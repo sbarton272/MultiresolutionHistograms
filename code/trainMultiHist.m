@@ -13,7 +13,7 @@ function model = trainMultiHist(trainImgNames, trainLabels, consts)
 %   from the training data
 
 classStructureVotingProb = 0.5;
-classStructures = [];
+classStructures = {};
 classProbs = [];
 
 numClasses = length(unique(trainLabels));
@@ -41,14 +41,14 @@ for class = 1:numClasses
     
     %% Determine class structure for this class
     classStructure = classProb > classStructureVotingProb;
-    classStructures = [classStructures classStructure];
+    classStructures = {classStructures classStructure};
     
 end
 
 %% Feature extraction for all images
 for class = 1:length(unique(trainLabels))
     % Compute feature vector for every image given the class structure
-    classStructure = classStructures(:,class);
+    classStructure = classStructures{class};
     featureVectors = [];
     for imgNo = 1:size(trainLabels, 1);
         I = imread(trainImgNames{imageNo});
