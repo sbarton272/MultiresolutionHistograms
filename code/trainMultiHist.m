@@ -2,6 +2,14 @@ function model = trainMultiHist(trainImgNames, trainLabels, consts)
 % Note: this functions assumes that trainImgNames has all images for class
 % 1 first, all images for class 2 after, etc etc
 
+%% Model object
+% Include class structures, class probs, and all the svms
+% class obj
+% - label
+% - structure
+% - count of training images
+% - structure probabilities
+% - class svm
 
 %% Compute class structures
 % This creates two matrices: 
@@ -56,10 +64,10 @@ for class = 1:length(unique(trainLabels))
     end
     
     % Train an SVM for this class using feature vectors and class labels
+    % TODO DUSTIN
 end
 
 
 %% Package model
-% Include class structures, class probs, and all the svms
 
 end
