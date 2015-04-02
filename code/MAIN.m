@@ -17,6 +17,7 @@ addpath('LibSvm-3.20\');
 consts.PRUNING_VAR_THRESH = .1;
 consts.PRUNING_DEPTH_MAX = 3;
 consts.NB_THRESH = .5;
+consts.ENT_PARAM = []; % optional
 
 %% Training
 

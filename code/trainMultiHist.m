@@ -6,8 +6,7 @@ for class
     for img
     %% Compute structure
     structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
-        consts.PRUNING_VAR_THRESH)
-
+        consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, true);
     end
     %% Determine class structure
 
