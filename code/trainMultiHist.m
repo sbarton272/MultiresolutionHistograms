@@ -16,8 +16,10 @@ classStructureVotingProb = 0.5;
 classStructures = [];
 classProbs = [];
 
+numClasses = length(unique(trainLabels));
+
 name_loc = 1;
-for class = 1:length(unique(trainLabels))
+for class = 1:numClasses
     classDecomps = []; % All image decompositions just for this class
     for imgNo = 1:sum(trainLabels == class);
         I = imread(trainImgNames{name_loc});
@@ -51,7 +53,8 @@ for class = 1:length(unique(trainLabels))
     for imgNo = 1:size(trainLabels, 1);
         I = imread(trainImgNames{imageNo});
         % Compute feature vector
-        featureVect = computeFeatureVect(I, classStructure);
+        featureVect = computeFeatureVect(I, classStructure, ...
+            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY);
         featureVectors = [featureVect featureVectors];
     end
     

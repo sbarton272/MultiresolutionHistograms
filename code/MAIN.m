@@ -13,6 +13,8 @@ load('../data/images/traintest.mat', 'train_imagenames', 'train_labels',...
 consts.PRUNING_VAR_THRESH = .1;
 consts.PRUNING_DEPTH_MAX = 3;
 consts.NB_THRESH = .5;
+consts.WNAME = 'haar';
+consts.ENTROPY = 'shannon';
 
 %% Training
 
