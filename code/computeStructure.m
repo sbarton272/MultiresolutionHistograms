@@ -21,8 +21,7 @@ end
 tree = wpdec2(X, depth, wname, entropyType, param);
 
 %% Calculate structure vector
-% TODO ones at children
-ind = allnodes(T);
+ind = leaves(T);
 nNodes = (1 - LEVEL_WIDTH^(depth+1)) / (1 - LEVEL_WIDTH);
 structure = zeros(nNodes, 1);
 structure(ind) = 1;
