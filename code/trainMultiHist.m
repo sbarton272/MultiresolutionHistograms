@@ -26,7 +26,7 @@ for class = 1:numClasses
         name_loc = name_loc + 1;
         % Compute structure
         structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
-                                        consts.PRUNING_VAR_THRESH);
+            consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, true);
         classDecomps = [classDecomps structure];
     end
     

@@ -3,8 +3,6 @@
 clear all;
 close all;
 
-addpath('plotwavelet2');
-
 %% Consts
 HSIZE = 20;
 SIGMA = 5;

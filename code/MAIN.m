@@ -8,6 +8,10 @@ close all
 load('../data/images/traintest.mat', 'train_imagenames', 'train_labels',...
     'test_imagenames', 'test_labels', 'mapping');
 
+%% Add Libraries
+
+addpath('LibSvm-3.20\');
+
 %% Constants struct
 
 consts.PRUNING_VAR_THRESH = .1;
@@ -15,6 +19,7 @@ consts.PRUNING_DEPTH_MAX = 3;
 consts.NB_THRESH = .5;
 consts.WNAME = 'haar';
 consts.ENTROPY = 'shannon';
+consts.ENT_PARAM = []; % optional
 
 %% Training
 
