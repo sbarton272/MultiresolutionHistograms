@@ -1,4 +1,5 @@
-function featureVect = computeFeatureVect(I, structure, depth, wname, entropy)
+function featureVect = computeFeatureVect(I, structure, depth, wname,...
+    entropy, numBins)
 
 childrenPerNode = 4;
 
@@ -37,7 +38,7 @@ for i = length(structure):-1:1
     % This is a leaf
     if node == 1
         % Mark parents as zeros
-        parent = floor((nodeI-1) / childrenPerNode);
+        parent = floor((i-1) / childrenPerNode);
         while (parent > 0)
             structure(parent+1) = 0;
             parent = floor((parent-1) / childrenPerNode);

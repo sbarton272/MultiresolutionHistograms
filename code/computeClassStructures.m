@@ -15,16 +15,16 @@ classStructures = cell(length(allClasses),2);
 for i = 1:length(allClasses)
 	classNo = allClasses(i);
 
-    classIndices = find(trainLabels == classNo)
+    classIndices = find(trainLabels == classNo);
     % All image decompositions just for this class
     classDecomps = [];
 
    	% Iter all images in class
-    for imgIndx = classIndices;
-        I = imread(trainImgNames{imgIndx});
+    for imgIndx = classIndices';
+        I = loadImg(trainImgNames{imgIndx}, consts.IMG_DIR);
         % Compute structure
         structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
-            consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, true);
+            consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, consts.DEBUG);
         classDecomps = [classDecomps structure];
     end
     
