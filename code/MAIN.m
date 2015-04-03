@@ -20,6 +20,7 @@ consts.NB_THRESH = .5;
 consts.WNAME = 'haar';
 consts.ENTROPY = 'shannon';
 consts.ENT_PARAM = []; % optional
+consts.CLASS_STRUCT_VOTE_PROB = 0.5;
 
 %% Training
 

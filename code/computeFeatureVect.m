@@ -12,7 +12,7 @@ T = wptree(childrenPerNode, depth, I, wname, entropy);
 % I has a 1 for all existing nodes
 indexes = find(structure == 1) - 1;
 leaves = [];
-% FIND LEAVES
+% TODO FIND LEAVES
 
 % Walk through the structure vector
 for i = leaves
