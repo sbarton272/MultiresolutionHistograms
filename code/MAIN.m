@@ -10,7 +10,7 @@ load('../data/images/traintest.mat', 'train_imagenames', 'train_labels',...
 
 %% Add Libraries
 
-addpath('LibSvm-3.20\');
+addpath('LibSvm-3.20/matlab');
 
 %% Constants struct
 
@@ -20,7 +20,11 @@ consts.NB_THRESH = .5;
 consts.WNAME = 'haar';
 consts.ENTROPY = 'shannon';
 consts.ENT_PARAM = []; % optional
+<<<<<<< Updated upstream
 consts.CLASS_STRUCT_VOTE_PROB = 0.5;
+=======
+consts.svmC=1;  %C parallel
+>>>>>>> Stashed changes
 
 %% Training
 

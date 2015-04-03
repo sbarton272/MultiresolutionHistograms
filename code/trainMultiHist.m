@@ -29,11 +29,19 @@ for classIndx = 1:length(allClasses)
             consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY);
         featureVectors = [featureVect featureVectors];
     end
+
     
     % Features in col, samples in rows (NxD)
 
+
+    normmin=min(featureVectors);
+    normmax=max(featureVectors);
+    featureVectors=(featureVectors-repmat(min(featureVectors),[size(featureVectors,1) 1]))./(repmat(max(featureVectors)-min(featureVectors),[size(featureVectors,1) 1]));
+    opt= sprintf('-c %f -B %d -q %d -t %d', consts.svmC, 1, 0, 2);
+    model = svmtrain(((trainLabels==class)*2)-1,featureVectors ,opt );
+
     % Train an SVM for this class using feature vectors and class labels
-    % TODO DUSTIN
+  
 end
 
 %% Package model
