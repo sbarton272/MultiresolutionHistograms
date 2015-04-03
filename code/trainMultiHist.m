@@ -10,15 +10,17 @@ function model = trainMultiHist(trainImgNames, trainLabels, consts)
 % - count of training images
 % - structure probabilities
 % - class svm
+allClasses = unique(trainLabels);
+model.classes = cell(length(allClasses),1);
 
 %% Compute class structures
 classStructures = computeClassStructures(trainImgNames, trainLabels, consts);
 
 %% Feature extraction for all images
 allClasses = unique(trainLabels);
-for class = 1:length(allClasses)
+for classIndx = 1:length(allClasses)
     % Compute feature vector for every image given the class structure
-    classStructure = classStructures{class};
+    classStructure = classStructures{classIndx};
     featureVectors = [];
     for imgNo = 1:size(trainLabels, 1);
         I = imread(trainImgNames{imageNo});
@@ -34,7 +36,15 @@ for class = 1:length(allClasses)
     % TODO DUSTIN
 end
 
-
 %% Package model
+for classIndx = 1:length(allClasses)
+    classModel.label = allClasses(i);
+    imgInd = find(trainLabels == classModel.label);
+    classModel.imgCount = length(imgInd);
+    classModel.structure = classStructures{i,1};
+    classModel.structureProb = classStructures{i,2};
+    classModel.svm = {}
+    model.classes{classIndx} = classModel;
+end
 
 end
