@@ -26,7 +26,7 @@ for classIndx = 1:length(allClasses)
         I = loadImg(trainImgNames{imgNo}, consts.IMG_DIR);
         % Compute feature vector
         featureVect = computeFeatureVect(I, classStructure, ...
-            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY, 
+            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,... 
             consts.NUM_BINS);
         featureVectors = [featureVect featureVectors];
     end
@@ -36,7 +36,7 @@ for classIndx = 1:length(allClasses)
     normmin=min(featureVectors);
     normmax=max(featureVectors);
     featureVectors=(featureVectors-repmat(min(featureVectors),[size(featureVectors,1) 1]))./(repmat(max(featureVectors)-min(featureVectors),[size(featureVectors,1) 1]));
-    opt= sprintf('-c %f -B %d -q %d -t %d', consts.SVM_C, 1, 0, 2);
+    opt = sprintf('-c %f -B %d -q %d -t %d', consts.SVM_C, 1, 0, 2);
     model = svmtrain(((trainLabels==class)*2)-1,featureVectors ,opt );
 
     % Train an SVM for this class using feature vectors and class labels
