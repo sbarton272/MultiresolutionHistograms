@@ -1,4 +1,16 @@
-function [model, normmin, normmax] = trainSvm(featureVectors, trainLabels, classLabel, consts)
+function [model, normmin, normmax] = trainSvm(trainImgNames, trainLabels,...
+	classStructure, classLabel, consts)
+
+%% Compute feature vector for every image given the class structure
+featureVectors = [];
+for imgNo = 1:size(trainLabels, 1);
+    I = loadImg(trainImgNames{imgNo}, consts.IMG_DIR);
+    % Compute feature vector
+    featureVect = computeFeatureVect(I, classStructure, ...
+        consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,... 
+        consts.NUM_BINS);
+    featureVectors = [featureVect featureVectors];
+end
 
 %% Normalize feature vector
 normmin = min(featureVectors);
@@ -9,6 +21,7 @@ featureVectors = bsxfun(@minus, featureVectors, normmin);
 featureVectors = bsxfun(@times, featureVectors, 1 ./ (normmax - normmin));
 
 %% Caclulate SVM
+% TODO options
 %opt = sprintf('-c %f -B %d -q %d -t %d', consts.SVM_C, 1, 0, 2);
 ind = ((trainLabels==classLabel)*2) - 1;
 model = svmtrain(featureVectors, ind);

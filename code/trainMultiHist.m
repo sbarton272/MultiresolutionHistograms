@@ -12,31 +12,24 @@ function model = trainMultiHist(trainImgNames, trainLabels, consts)
 % - class svm
 allClasses = unique(trainLabels);
 model.classes = cell(length(allClasses),1);
+model.trainImgNames = trainImgNames;
+model.trainLabels = trainLabels;
+model.allClasses = allClasses;
 
 %% Compute class structures
 classStructures = computeClassStructures(trainImgNames, trainLabels, consts);
 
 %% Feature extraction for all images
 for classIndx = 1:length(allClasses)
-
-    %% Compute feature vector for every image given the class structure
-    classStructure = classStructures{classIndx,1};
-    featureVectors = [];
-    for imgNo = 1:size(trainLabels, 1);
-        I = loadImg(trainImgNames{imgNo}, consts.IMG_DIR);
-        % Compute feature vector
-        featureVect = computeFeatureVect(I, classStructure, ...
-            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,... 
-            consts.NUM_BINS);
-        featureVectors = [featureVect featureVectors];
-    end
+    classLabel = allClasses(classIndx);
 
     %% Train an SVM for this class using feature vectors and class labels    
     % Features in col, samples in rows (NxD)
-    [svmModel, normMin, normMax] = trainSvm(featureVectors, trainLabels, allClasses(classIndx), consts);
+    [svmModel, normMin, normMax] = trainSvm(trainImgNames, trainLabels,...
+        classStructures{classIndx,1}, classLabel, consts);
 
     %% Package model
-    classModel.label = allClasses(classIndx);
+    classModel.label = classLabel;
     imgInd = find(trainLabels == classModel.label);
     classModel.imgCount = length(imgInd);
     classModel.structure = classStructures{classIndx,1};
