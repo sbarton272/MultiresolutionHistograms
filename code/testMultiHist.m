@@ -1,23 +1,21 @@
 function C = testMultiHist(model, testImgNames, testLabels,...
     labelMapping, consts)
 
-for i=1:size(testImgNames,1)
-%% Extract structure
-
-%% Naive Bayes with structure
-
-for class = selectedClasses
-%% Calculate feature vector
-
-%% Apply to SVM
-
-    
-    featureVector=(featureVector-repmat(classmodel.normmin,[size(featureVector,1) 1]))./(repmat(classmodel.normmax-classmodel.normmin,[size(featureVector,1) 1]));
-    [predicted_label, accuracy, decision_values] = svmpredict(((Y==class)*2)-1, featureVector, model); % test the training data
-end
+numImgs = size(testImgNames,1);
+numClasses = length(model.allClasses);
+C = zeros(numClasses);
+for i = 1:numImgs
+	
+	I = loadImg(testImgNames{i}, consts.IMG_DIR);
+	label = classifyImg(I, model, consts);
+	C = updateCounts(testLabels{i}, lable, allClasses);
 
 end
+end
 
-%% Pick best match
-
+function C = updateCounts(C, targetLabel, guess, allClasses)
+% C(i,j) class i count, predicted j
+i = find(allClasses == targetLabel);
+j = find(allClasses == guess);
+C(i,j) = C(i,j) + 1;
 end
