@@ -1,5 +1,7 @@
 function C = testMultiHist(model, testImgNames, testLabels,...
     labelMapping, consts)
+C = zeros(numClasses);
+
 for i=1:length(testImgNames)
     I = imread(testImgNames{i});
     
@@ -29,6 +31,16 @@ end
 %% Pick best match
 [~,indexInSelClasses]=max(probabilityList);
 BestMatch=selectedClasses(indexInSelClasses);
-C=BestMatch;
+C = updateCounts(testLabels{i}, BestMatch, allClasses);
 end
+
+
+
+end
+
+function C = updateCounts(C, targetLabel, guess, allClasses)
+% C(i,j) class i count, predicted j
+i = find(allClasses == targetLabel);
+j = find(allClasses == guess);
+C(i,j) = C(i,j) + 1;
 end
