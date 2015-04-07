@@ -1,5 +1,5 @@
-function h = normHist(I)
+function h = normHist(I, binSize)
 
-% TODO, optional arg bin size
+h = imhist(I, binSize);
 
 end

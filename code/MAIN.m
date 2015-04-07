@@ -34,7 +34,7 @@ consts.DEBUG = true;
 model = trainMultiHist(train_imagenames, train_labels, consts);
 
 %% Testing
-C = tesMultiHist(model, test_imagenames, test_labels, mapping, consts);
+%C = tesMultiHist(model, test_imagenames, test_labels, mapping, consts);
 
 %% Save testing results
-save('results.mat','C');
+%save('results.mat','C');

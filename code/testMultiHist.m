@@ -1,5 +1,6 @@
 function C = testMultiHist(model, testImgNames, testLabels,...
     labelMapping, consts)
+
 for i=1:size(testImgNames,1)
 %% Extract structure
 
