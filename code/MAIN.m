@@ -28,7 +28,7 @@ consts.ENT_PARAM = []; % optional
 consts.NUM_BINS = 256;
 consts.CLASS_STRUCT_VOTE_PROB = 0.5;
 consts.SVM_C = 1;  %C parallel
-consts.DEBUG = true;
+consts.DEBUG = false;
 
 %% Training
 model = trainMultiHist(train_imagenames, train_labels, consts);

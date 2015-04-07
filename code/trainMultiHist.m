@@ -33,14 +33,14 @@ for classIndx = 1:length(allClasses)
 
     %% Train an SVM for this class using feature vectors and class labels    
     % Features in col, samples in rows (NxD)
-    [svmModel, normMin, normMax] = trainSvm(featureVectors, trainLabels, classLabel, consts);
+    [svmModel, normMin, normMax] = trainSvm(featureVectors, trainLabels, allClasses(classIndx), consts);
 
     %% Package model
-    classModel.label = allClasses(i);
+    classModel.label = allClasses(classIndx);
     imgInd = find(trainLabels == classModel.label);
     classModel.imgCount = length(imgInd);
-    classModel.structure = classStructures{i,1};
-    classModel.structureProb = classStructures{i,2};
+    classModel.structure = classStructures{classIndx,1};
+    classModel.structureProb = classStructures{classIndx,2};
     classModel.svm = svmModel;
     classModel.normMin = normMin;
     classModel.normMax = normMax;
