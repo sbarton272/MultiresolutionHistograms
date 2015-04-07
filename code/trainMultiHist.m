@@ -17,42 +17,39 @@ model.classes = cell(length(allClasses),1);
 classStructures = computeClassStructures(trainImgNames, trainLabels, consts);
 
 %% Feature extraction for all images
-allClasses = unique(trainLabels);
 for classIndx = 1:length(allClasses)
-    % Compute feature vector for every image given the class structure
-    classStructure = classStructures{classIndx};
+
+    %% Compute feature vector for every image given the class structure
+    classStructure = classStructures{classIndx,1};
     featureVectors = [];
     for imgNo = 1:size(trainLabels, 1);
-        I = imread(trainImgNames{imgNo});
+        I = loadImg(trainImgNames{imgNo}, consts.IMG_DIR);
         % Compute feature vector
         featureVect = computeFeatureVect(I, classStructure, ...
-            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY);
+            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,... 
+            consts.NUM_BINS);
         featureVectors = [featureVect featureVectors];
     end
 
-    
+    %% Train an SVM for this class using feature vectors and class labels    
     % Features in col, samples in rows (NxD)
+    [svmModel, normMin, normMax] = trainSvm(featureVectors, trainLabels, allClasses(classIndx), consts);
 
 
-    normmin=min(featureVectors);
-    normmax=max(featureVectors);
-    featureVectors=(featureVectors-repmat(min(featureVectors),[size(featureVectors,1) 1]))./(repmat(max(featureVectors)-min(featureVectors),[size(featureVectors,1) 1]));
-    opt= sprintf('-c %f -B %d -q %d -t %d', consts.svmC, 1, 0, 2);
-    model = svmtrain(((trainLabels==class)*2)-1,featureVectors ,opt );
+    
 
-    % Train an SVM for this class using feature vectors and class labels
-  
-end
-
-%% Package model
-for i = 1:length(allClasses)
-    classModel.label = allClasses(i);
+    %% Package model
+    classModel.label = allClasses(classIndx);
     imgInd = find(trainLabels == classModel.label);
     classModel.imgCount = length(imgInd);
-    classModel.structure = classStructures{i,1};
-    classModel.structureProb = classStructures{i,2};
-    classModel.svm = {};
-    model.classes{i} = classModel;
+    classModel.structure = classStructures{classIndx,1};
+    classModel.structureProb = classStructures{classIndx,2};
+    classModel.svm = svmModel;
+    classModel.normMin = normMin;
+    classModel.normMax = normMax;
+    model.classes{classIndx} = classModel;
+
+
 end
 
 end
