@@ -23,7 +23,7 @@ for classIndx = 1:length(allClasses)
     classStructure = classStructures{classIndx};
     featureVectors = [];
     for imgNo = 1:size(trainLabels, 1);
-        I = imread(trainImgNames{imageNo});
+        I = imread(trainImgNames{imgNo});
         % Compute feature vector
         featureVect = computeFeatureVect(I, classStructure, ...
             consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY);
@@ -45,14 +45,14 @@ for classIndx = 1:length(allClasses)
 end
 
 %% Package model
-for classIndx = 1:length(allClasses)
+for i = 1:length(allClasses)
     classModel.label = allClasses(i);
     imgInd = find(trainLabels == classModel.label);
     classModel.imgCount = length(imgInd);
     classModel.structure = classStructures{i,1};
     classModel.structureProb = classStructures{i,2};
-    classModel.svm = {}
-    model.classes{classIndx} = classModel;
+    classModel.svm = {};
+    model.classes{i} = classModel;
 end
 
 end
