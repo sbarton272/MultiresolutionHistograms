@@ -22,7 +22,7 @@ featureVector = computeFeatureVect(I, model.classes{class}.structure, ...
 %% Apply to SVM
 
     featureVector=(featureVector-repmat(classmodel.normmin,[size(featureVector,1) 1]))./(repmat(classmodel.normmax-classmodel.normmin,[size(featureVector,1) 1]));
-    [predicted_label, accuracy, decision_values] = svmpredict(((Y==class)*2)-1, featureVector, model); % test the training data
+    [predicted_label, accuracy, decision_values] = svmpredict(((Y==class)*2)-1, featureVector, model.classes{class}.svm); % test the training data
     probabilityList=[probabilityList decision_values];
     
 end
