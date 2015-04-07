@@ -26,7 +26,7 @@ for classIndx = 1:length(allClasses)
         I = loadImg(trainImgNames{imgNo}, consts.IMG_DIR);
         % Compute feature vector
         featureVect = computeFeatureVect(I, classStructure, ...
-            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY, 
+            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,... 
             consts.NUM_BINS);
         featureVectors = [featureVect featureVectors];
     end
