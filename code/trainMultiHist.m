@@ -32,8 +32,6 @@ for classIndx = 1:length(allClasses)
 
     
     % Features in col, samples in rows (NxD)
-
-
     normmin=min(featureVectors);
     normmax=max(featureVectors);
     featureVectors=(featureVectors-repmat(min(featureVectors),[size(featureVectors,1) 1]))./(repmat(max(featureVectors)-min(featureVectors),[size(featureVectors,1) 1]));
