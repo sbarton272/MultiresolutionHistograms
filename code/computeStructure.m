@@ -21,14 +21,14 @@ end
 tree = wpdec2(X, depth, wname, entropyType, param);
 
 %% Calculate structure vector
-ind = allnodes(tree.tree_struct);
+ind = allnodes(tree);
 nNodes = (1 - LEVEL_WIDTH^(depth+1)) / (1 - LEVEL_WIDTH);
 structure = zeros(nNodes, 1);
-structure(ind) = 1;
+structure(ind+1) = 1;
 
 %% Debug plot
 if debug
-   figure; plot(tree.tree_struct);
+   plot(tree);
 end
 
 end
