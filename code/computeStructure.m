@@ -19,6 +19,7 @@ end
 
 %% Optimal wavelet decomp
 tree = wpdec2(X, depth, wname, entropyType, param);
+tree = besttree(tree);
 
 %% Calculate structure vector
 ind = allnodes(tree);

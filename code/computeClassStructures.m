@@ -32,6 +32,7 @@ for i = 1:length(allClasses)
     [vectorLen, classImages] = size(classDecomps);
     classImages = double(classImages);
     classProb = sum(classDecomps,2)/classImages;
+    classProb(classProb == 0) = consts.ZERO_REPLACEMENT;
     classStructures{i,2} = classProb;
     
     %% Determine class structure for this class

@@ -29,8 +29,6 @@ for classIndx = 1:length(allClasses)
         classStructures{classIndx,1}, classLabel, consts);
 
 
-    
-
     %% Package model
     classModel.label = classLabel;
     imgInd = find(trainLabels == classModel.label);
