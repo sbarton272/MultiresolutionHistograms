@@ -36,7 +36,7 @@ consts.ZERO_REPLACEMENT = .01;
 model = trainMultiHist(train_imagenames, train_labels, consts);
 
 %% Testing
-C = testMultiHist(model, test_imagenames, test_labels, mapping, consts)
+C = testMultiHist(model, test_imagenames, test_labels, consts)
 
 %% Save testing results
 %save('results.mat','C', 'model', 'test_imagename', 'test_labels');

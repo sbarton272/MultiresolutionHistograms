@@ -1,5 +1,4 @@
-function C = testMultiHist(model, testImgNames, testLabels,...
-    labelMapping, consts)
+function C = testMultiHist(model, testImgNames, testLabels, consts)
 
 allClasses = unique(testLabels);
 numClasses = length(allClasses);
@@ -10,7 +9,7 @@ for i=1:length(testImgNames)
     
 %% Extract structure
 structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
-            consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, true);
+            consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, consts.DEBUG);
 
 %% Naive Bayes with structure
 probabilityofstructure=zeros(1,numClasses);
@@ -27,15 +26,18 @@ if isempty(selectedClasses)
 end
 
 probabilityList=[];
-for class = selectedClasses
-%% Calculate feature vector
-    featureVector = computeFeatureVect(I, model.classes{class}.structure, ...
-            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY, consts.NUM_BINS);
-%% Apply to SVM
-    classModel = model.classes{class};
-    featureVector=(featureVector-repmat(classModel.normMin,[size(featureVector,1) 1]))./(repmat(classModel.normMax-classModel.normMin,[size(featureVector,1) 1]));
-    [predicted_label, accuracy, decision_values] = svmpredict(((Y==class)*2)-1, featureVector, classModel.svm); % test the training data
-    probabilityList=[probabilityList decision_values];
+for classInd = selectedClasses
+    classModel = model.classes{classInd};
+
+    %% Calculate feature vector
+    featureVector = computeFeatureVect(I, classModel.structure, ...
+            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,...
+            consts.NUM_BINS);
+
+    %% Apply to SVM
+    % TODO fix, is normalization handled?
+    [predictedLabel, accuracy, decisionValues] = svmpredict(featureVector, classModel.svm);
+    probabilityList = [probabilityList decisionValues];
     
 end
 

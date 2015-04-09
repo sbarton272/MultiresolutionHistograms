@@ -1,4 +1,4 @@
-function [model, normmin, normmax] = trainSvm(trainImgNames, trainLabels,...
+function [model] = trainSvm(trainImgNames, trainLabels,...
 	classStructure, classLabel, consts)
 
 %% Compute feature vector for every image given the class structure
@@ -12,18 +12,9 @@ for imgNo = 1:size(trainLabels, 1);
     featureVectors = [featureVect featureVectors];
 end
 
-%% Normalize feature vector
-normmin = min(featureVectors);
-normmax = max(featureVectors);
- % Zero min
-featureVectors = bsxfun(@minus, featureVectors, normmin);
- % Norm to unit len
-featureVectors = bsxfun(@times, featureVectors, 1 ./ (normmax - normmin));
-
 %% Caclulate SVM
-% TODO options
-%opt = sprintf('-c %f -B %d -q %d -t %d', consts.SVM_C, 1, 0, 2);
-ind = ((trainLabels==classLabel)*2) - 1;
-model = svmtrain(featureVectors, ind);
+opt = sprintf('-c %f -b %d -q %d -t %d', consts.SVM_C, 1, 0, 2);
+ind = ((trainLabels==classLabel)*2) - 1; % Convert lables from 1,0 to +-1
+model = svmtrain(featureVectors', ind, opt);
 
 end

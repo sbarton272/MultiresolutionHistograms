@@ -25,7 +25,7 @@ for classIndx = 1:length(allClasses)
 
     %% Train an SVM for this class using feature vectors and class labels    
     % Features in col, samples in rows (NxD)
-    [svmModel, normMin, normMax] = trainSvm(trainImgNames, trainLabels,...
+    svmModel = trainSvm(trainImgNames, trainLabels,...
         classStructures{classIndx,1}, classLabel, consts);
 
 
@@ -36,8 +36,6 @@ for classIndx = 1:length(allClasses)
     classModel.structure = classStructures{classIndx,1};
     classModel.structureProb = classStructures{classIndx,2};
     classModel.svm = svmModel;
-    classModel.normMin = normMin;
-    classModel.normMax = normMax;
     model.classes{classIndx} = classModel;
 
 
