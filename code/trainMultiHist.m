@@ -1,4 +1,4 @@
-function model = trainMultiHist(trainImgNames, trainLabels, consts)
+function model = trainMultiHist(trainImgNames, trainLabels, mapping, consts)
 % Note: this functions assumes that trainImgNames has all images for class
 % 1 first, all images for class 2 after, etc etc
 
@@ -31,6 +31,7 @@ for classIndx = 1:length(allClasses)
 
     %% Package model
     classModel.label = classLabel;
+    classModel.name = mapping{classLabel};
     imgInd = find(trainLabels == classModel.label);
     classModel.imgCount = length(imgInd);
     classModel.structure = classStructures{classIndx,1};

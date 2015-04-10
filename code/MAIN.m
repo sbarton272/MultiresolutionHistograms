@@ -35,7 +35,7 @@ consts.DEBUG = false;
 consts.ZERO_REPLACEMENT = .01;
 
 %% Training
-model = trainMultiHist(train_imagenames, train_labels, consts);
+model = trainMultiHist(train_imagenames, train_labels, mapping, consts);
 save('model.mat', 'model');
 
 %% Testing

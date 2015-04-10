@@ -37,7 +37,7 @@ for i=1:length(testImgNames)
 
         %% Apply to SVM
         % TODO fix, is normalization handled?
-        svmLabel = (testLabels(i) == classModel.label) * 2 - 1; % Convert label to +-1
+        svmLabel = ((testLabels(i) == classModel.label) * 2) - 1; % Convert label to +-1
         [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVector', classModel.svm);
         probabilityList = [probabilityList; decisionValues];
 
