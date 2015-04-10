@@ -7,44 +7,50 @@ C = zeros(numClasses);
 for i=1:length(testImgNames)
     I = loadImg(testImgNames{i}, consts.IMG_DIR);
     
-%% Extract structure
-structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
-            consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, consts.DEBUG);
+    %% Extract structure
+    structure = computeStructure(I, consts.PRUNING_DEPTH_MAX,...
+                consts.WNAME, consts.ENTROPY, consts.ENT_PARAM, consts.DEBUG);
 
-%% Naive Bayes with structure
-probabilityofstructure=zeros(1,numClasses);
-for classind=1:numClasses
-    structureProb = model.classes{classind}.structureProb;
-    prob = structureProb .* (structure == 1) + (1-structureProb) .* (structure == 0);
-    probabilityofstructure(classind)= sum(log(prob));
-end
-selectedClasses = find(probabilityofstructure>=log(consts.USE_CLASS_SVM_THRESH));
+    %% Naive Bayes with structure
+    probabilityOfStructure=zeros(1,numClasses);
+    for classind=1:numClasses
+        structureProb = model.classes{classind}.structureProb;
+        prob = structureProb .* (structure == 1) + (1-structureProb) .* (structure == 0);
+        probabilityOfStructure(classind)= sum(log(prob));
+    end
+    selectedClasses = find(probabilityOfStructure>=log(consts.USE_CLASS_SVM_THRESH));
 
-% If nothing above the threshold, try everything
-if isempty(selectedClasses)
-    selectedClasses = 1:numClasses;
-end
+    % If nothing above the threshold, try everything
+    if isempty(selectedClasses)
+        selectedClasses = 1:numClasses;
+    end
 
-probabilityList=[];
-for classInd = selectedClasses
-    classModel = model.classes{classInd};
+    %% Test on SVMs
+    probabilityList=[];
+    for classInd = selectedClasses
+        classModel = model.classes{classInd};
 
-    %% Calculate feature vector
-    featureVector = computeFeatureVect(I, classModel.structure, ...
-            consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,...
-            consts.NUM_BINS);
+        %% Calculate feature vector
+        featureVector = computeFeatureVect(I, classModel.structure, ...
+                consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,...
+                consts.NUM_BINS);
 
-    %% Apply to SVM
-    % TODO fix, is normalization handled?
-    [predictedLabel, accuracy, decisionValues] = svmpredict(featureVector, classModel.svm);
-    probabilityList = [probabilityList decisionValues];
+        %% Apply to SVM
+        % TODO fix, is normalization handled?
+        svmLabel = (testLabels(i) == classModel.label) * 2 - 1; % Convert label to +-1
+        [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVector', classModel.svm);
+        probabilityList = [probabilityList; decisionValues];
+
+    end
+
+    %% Pick best match
+    [~,indexInSelClasses] = max(probabilityList);
+    BestMatch=selectedClasses(indexInSelClasses);
+    C = updateCounts(C, testLabels(i), allClasses(BestMatch), allClasses);
     
-end
-
-%% Pick best match
-[~,indexInSelClasses]=max(probabilityList);
-BestMatch=selectedClasses(indexInSelClasses);
-C = updateCounts(C, testLabels(i), BestMatch, allClasses);
+    if consts.DEBUG
+       disp(['Guess: ', num2str(allClasses(BestMatch)), ' (', num2str(testLabels(i)), ')']);
+    end
 end
 
 end

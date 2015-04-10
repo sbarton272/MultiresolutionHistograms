@@ -13,8 +13,8 @@ for imgNo = 1:size(trainLabels, 1);
 end
 
 %% Caclulate SVM
-opt = sprintf('-c %f -b %d -q %d -t %d', consts.SVM_C, 1, 0, 2);
-ind = ((trainLabels==classLabel)*2) - 1; % Convert lables from 1,0 to +-1
-model = svmtrain(featureVectors', ind, opt);
+opt = sprintf('-t %d -c %f -b %d -q %d', 2, consts.SVM_C, 1, 0);
+lables = ((trainLabels==classLabel)*2) - 1; % Convert lables from 1,0 to +-1
+model = svmtrain(lables, featureVectors', opt);
 
 end
