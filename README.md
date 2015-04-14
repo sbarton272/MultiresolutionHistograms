@@ -35,4 +35,13 @@
 
 - Wavelet instead of spatial decomposition
 
+# TODO
 
+- (Important) Paper
+- (Important) Run once
+- (Important) Baseline with Gaussian
+- Classifaction accuracy (different datasets)
+- Entropy functions for pruning (experimentation)
+- Number of levels
+- RGB histograms
+- Reduced size histograms (bins)
