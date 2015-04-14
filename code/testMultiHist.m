@@ -33,7 +33,7 @@ for i=1:length(testImgNames)
         %% Calculate feature vector
         featureVector = computeFeatureVect(I, classModel.structure, ...
                 consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,...
-                consts.NUM_BINS);
+                consts.NUM_BINS, consts.DEBUG);
 
         %% Apply to SVM
         % TODO fix, is normalization handled?

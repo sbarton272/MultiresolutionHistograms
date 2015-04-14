@@ -8,7 +8,7 @@ for imgNo = 1:size(trainLabels, 1);
     % Compute feature vector
     featureVect = computeFeatureVect(I, classStructure, ...
         consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,... 
-        consts.NUM_BINS);
+        consts.NUM_BINS, consts.DEBUG);
     featureVectors = [featureVectors featureVect];
 end
 

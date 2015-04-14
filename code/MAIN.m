@@ -31,7 +31,7 @@ consts.ENT_PARAM = []; % optional
 consts.NUM_BINS = 256;
 consts.CLASS_STRUCT_VOTE_PROB = .5;
 consts.SVM_C = 1;  %C parallel
-consts.DEBUG = false;
+consts.DEBUG = true;
 consts.ZERO_REPLACEMENT = .01;
 
 %% Training

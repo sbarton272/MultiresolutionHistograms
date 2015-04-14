@@ -28,7 +28,6 @@ for classIndx = 1:length(allClasses)
     svmModel = trainSvm(trainImgNames, trainLabels,...
         classStructures{classIndx,1}, classLabel, consts);
 
-
     %% Package model
     classModel.label = classLabel;
     classModel.name = mapping{classLabel};
