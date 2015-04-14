@@ -5,7 +5,7 @@ if size(I,3) == 3
    I = rgb2gray(I); 
 end
 
-h = imhist(I, binSize);
+h = hist(I(:), binSize);
 h = h / sum(h);
 
 end

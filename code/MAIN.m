@@ -1,7 +1,7 @@
 %% Multiresolution Histograms
 
 clear all
-close all
+close all force
 
 %% Load data
 
@@ -31,7 +31,7 @@ consts.ENT_PARAM = []; % optional
 consts.NUM_BINS = 256;
 consts.CLASS_STRUCT_VOTE_PROB = .5;
 consts.SVM_C = 1;  %C parallel
-consts.DEBUG = true;
+consts.DEBUG = false;
 consts.ZERO_REPLACEMENT = .01;
 
 %% Training
@@ -43,4 +43,4 @@ load('model.mat', 'model');
 C = testMultiHist(model, test_imagenames, test_labels, consts)
 
 %% Save testing results
-%save('results.mat','C', 'model', 'consts', 'test_imagename', 'test_labels');
+save('results.mat','C', 'model', 'consts', 'test_imagenames', 'test_labels');
