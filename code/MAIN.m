@@ -1,7 +1,7 @@
 %% Multiresolution Histograms
 
 clear all
-close all
+close all force
 
 %% Load data
 
@@ -35,7 +35,7 @@ consts.DEBUG = false;
 consts.ZERO_REPLACEMENT = .01;
 
 %% Training
-model = trainMultiHist(train_imagenames, train_labels, consts);
+model = trainMultiHist(train_imagenames, train_labels, mapping, consts);
 save('model.mat', 'model');
 
 %% Testing
@@ -43,4 +43,4 @@ load('model.mat', 'model');
 C = testMultiHist(model, test_imagenames, test_labels, consts)
 
 %% Save testing results
-%save('results.mat','C', 'model', 'consts', 'test_imagename', 'test_labels');
+save('results.mat','C', 'model', 'consts', 'test_imagenames', 'test_labels');

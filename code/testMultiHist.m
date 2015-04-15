@@ -33,16 +33,20 @@ for i=1:length(testImgNames)
         %% Calculate feature vector
         featureVector = computeFeatureVect(I, classModel.structure, ...
                 consts.PRUNING_DEPTH_MAX, consts.WNAME, consts.ENTROPY,...
-                consts.NUM_BINS);
+                consts.NUM_BINS, consts.DEBUG);
 
         %% Apply to SVM
         % TODO fix, is normalization handled?
-        svmLabel = (testLabels(i) == classModel.label) * 2 - 1; % Convert label to +-1
-        zeroedFV=bsxfun(@minus, featureVector ,classModel.normmin);
+
         
-        
-        featureVector=bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
-        keyboard;
+%         zeroedFV=bsxfun(@minus, featureVector ,classModel.normmin);
+%         
+%         
+%         featureVector=bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
+%         keyboard;
+
+        svmLabel = ((testLabels(i) == classModel.label) * 2) - 1; % Convert label to +-1
+
         [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVector', classModel.svm);
         probabilityList = [probabilityList; decisionValues];
 
