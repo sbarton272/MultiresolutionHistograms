@@ -7,12 +7,12 @@ close all force
 
 %load('../data/images/traintest.mat', 'train_imagenames', 'train_labels',...
 %    'test_imagenames', 'test_labels', 'mapping');
-
-load('../data/images/devData.mat', 'dev_imagenames', 'dev_labels', 'mapping');
-train_imagenames = dev_imagenames;
-test_imagenames = dev_imagenames;
-train_labels = dev_labels;
-test_labels = dev_labels;
+load('../data/images/traintest.mat');
+%load('../data/images/devData.mat', 'dev_imagenames', 'dev_labels', 'mapping');
+% train_imagenames = dev_imagenames;
+% test_imagenames = dev_imagenames;
+% train_labels = dev_labels;
+% test_labels = dev_labels;
 
 %% Add Libraries
 addpath('LibSvm-3.20/');
