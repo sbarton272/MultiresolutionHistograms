@@ -38,10 +38,11 @@
 # TODO
 
 - (Important) Paper
-- (Important) Run once
-- (Important) Baseline with Gaussian
-- Classifaction accuracy (different datasets)
-- Entropy functions for pruning (experimentation)
+- (Done) Run once
+- (Important) Baseline with Gaussian (Dustin)
+- Play around with Bayes - check accuracy of just this component (Gavi)
+- Structure differences (how are different are they)(Gavi)
+- RGB histograms (Spencer)
+- Entropy functions for pruning (experimentation) (Spencer)
 - Number of levels
-- RGB histograms
 - Reduced size histograms (bins)
