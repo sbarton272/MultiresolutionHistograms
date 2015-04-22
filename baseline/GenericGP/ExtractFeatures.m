@@ -1,14 +1,14 @@
-function featureVect=ExtractFeatures(image)
-descentDepth=3;
-numBins=256;
-featureVect=[];
-currentImg=rgb2gray(image);
-[feature, binLocs] = imhist(currentImg, numBins);
-featureVect = [featureVec; feature];
-for i=1:descentDepth+1
-    currentImg= impyramid(currentImg, 'expand');
-    allImages{i} = currentImg;
-    [feature, binLocs] = imhist(currentImg, numBins);
-    featureVect = [featureVec; feature];
+function featureVect = ExtractFeatures(image, consts)
+featureVect = [];
+currentImg = rgb2gray(image);
+
+% Get gaussian levels
+[feature, ~] = imhist(currentImg, consts.NUM_BINS);
+featureVect = [featureVect; feature];
+for i=1:consts.PYRAMID_DEPTH
+    currentImg = impyramid(currentImg, 'reduce');
+    [feature, ~] = imhist(currentImg, consts.NUM_BINS);
+    featureVect = [featureVect; feature];
 end
+
 end
