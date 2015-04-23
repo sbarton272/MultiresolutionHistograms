@@ -30,8 +30,15 @@ consts.CLASS_STRUCT_VOTE_PROB = .5;
 consts.SVM_C = 1;  %C parallel
 consts.DEBUG = false;
 consts.ZERO_REPLACEMENT = .01;
-%% train
+%% Train
 allClasses = unique(train_labels);
 
 model = trainAll(train_imagenames, train_labels, consts,allClasses);
-accuracy = testAll(model, test_imagenames, test_labels, consts,allClasses);
+
+save('model.mat', 'model');
+
+%% Test
+
+C = testAll(model, test_imagenames, test_labels, consts,allClasses)
+
+save('results.mat', 'C');
