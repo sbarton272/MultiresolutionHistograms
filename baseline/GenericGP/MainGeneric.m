@@ -3,11 +3,9 @@ close all
 
 %% Load data
 
- load('../../data/images/traintest.mat', 'train_imagenames', 'train_labels','test_imagenames', 'test_labels', 'mapping');
+load('../../data/images/traintest.mat', 'train_imagenames', 'train_labels','test_imagenames', 'test_labels', 'mapping');
 
-%load('../data/images/traintest.mat');
-
-%load('../../data/images/devData.mat', 'dev_imagenames', 'dev_labels', 'mapping');
+% load('../../data/images/devData.mat', 'dev_imagenames', 'dev_labels', 'mapping');
 % train_imagenames = dev_imagenames;
 % test_imagenames = dev_imagenames;
 % train_labels = dev_labels;
@@ -31,7 +29,7 @@ consts.ENT_PARAM = []; % optional
 consts.NUM_BINS = 256;
 consts.CLASS_STRUCT_VOTE_PROB = .5;
 consts.SVM_C = 1;  %C parallel
-consts.DEBUG = false;
+consts.DEBUG = true;
 consts.ZERO_REPLACEMENT = .01;
 %% Train
 allClasses = unique(train_labels);
