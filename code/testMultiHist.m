@@ -51,14 +51,10 @@ for i=1:length(testImgNames)
 
         %% Apply to SVM
         % TODO fix, is normalization handled?
-
         
-        zeroedFV=bsxfun(@minus, featureVector ,classModel.normmin);
+        % zeroedFV = bsxfun(@minus, featureVector ,classModel.normmin);
+        % featureVector = bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
         
-        
-        featureVector=bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
-        keyboard;
-
         svmLabel = ((testLabels(i) == classModel.label) * 2) - 1; % Convert label to +-1
 
         [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVector', classModel.svm);

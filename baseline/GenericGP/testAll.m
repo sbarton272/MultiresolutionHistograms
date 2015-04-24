@@ -1,19 +1,16 @@
 function C = testAll(models, testImgNames, testLabels, consts, allClasses)
 
 %% Compute feature vector for every image given the class structure
-featureVectors = [];
-for imgNo = 1:size(testLabels, 1);
-    I = loadImg(testImgNames{imgNo}, consts.IMG_DIR);
-    % Compute feature vector
-    featureVect=ExtractFeatures(I);
-    featureVectors = [featureVectors featureVect];
-end
+featureVectors = extractFeaturesVects(testImgNames, consts);
+
 probability=[];
 for i = 1:length(allClasses)
     svmLabel = (testLabels == allClasses(i)) * 2 - 1; % Convert label to +-1
-    [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVectors', models{i});
-    keyboard;
+    [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVectors, models{i});
     probability=[probability decisionValues];
+    if consts.DEBUG
+       disp(['Tested ', num2str(allClasses(i))]);
+    end
 end
 
 [~,indexOfBestClass] = max(probability');
