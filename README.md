@@ -39,7 +39,7 @@
 
 - (Important) Paper
 - (Done) Run once
-- (Done) Baseline with Gaussian
+- (Important) Baseline with Gaussian
 - Play around with Bayes - check accuracy of just this component (Gavi)
 - Structure differences (how are different are they)(Gavi)
 - RGB histograms (Spencer)
