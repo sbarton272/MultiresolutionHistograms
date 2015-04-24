@@ -54,11 +54,11 @@ for i=1:length(testImgNames)
 
     %% Pick best match
     [~,indexInSelClasses] = max(probabilityList);
-    BestMatch=selectedClasses(indexInSelClasses);
-    C = updateCounts(C, testLabels(i), allClasses(BestMatch), allClasses);
+    bestMatch=selectedClasses(indexInSelClasses);
+    C = updateCounts(C, testLabels(i), allClasses(bestMatch), allClasses);
     
     if consts.DEBUG
-       disp(['Guess: ', num2str(allClasses(BestMatch)), ' (', num2str(testLabels(i)), ')']);
+       disp(['Guess: ', num2str(allClasses(bestMatch)), ' (', num2str(testLabels(i)), ')']);
     end
 end
 

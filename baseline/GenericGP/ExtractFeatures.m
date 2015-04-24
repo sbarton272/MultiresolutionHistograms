@@ -11,4 +11,5 @@ for i=1:descentDepth+1
     [feature, binLocs] = imhist(currentImg, numBins);
     featureVect = [featureVect; feature];
 end
+
 end
