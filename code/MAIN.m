@@ -33,6 +33,7 @@ consts.CLASS_STRUCT_VOTE_PROB = .5;
 consts.SVM_C = 1;  %C parallel
 consts.DEBUG = false;
 consts.ZERO_REPLACEMENT = .01;
+consts.LOG_PROB_MIN = -120;
 
 %% Training
 model = trainMultiHist(train_imagenames, train_labels, mapping, consts);

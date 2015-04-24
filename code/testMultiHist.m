@@ -16,15 +16,29 @@ for i=1:length(testImgNames)
     for classind=1:numClasses
         structureProb = model.classes{classind}.structureProb;
         prob = structureProb .* (structure == 1) + (1-structureProb) .* (structure == 0);
-        probabilityOfStructure(classind)= sum(log(prob));
+        probabilityOfStructure(classind)= log(prod(prob));
     end
-    selectedClasses = find(probabilityOfStructure>=log(consts.USE_CLASS_SVM_THRESH));
-
-    % If nothing above the threshold, try everything
-    if isempty(selectedClasses)
-        selectedClasses = 1:numClasses;
+    
+    % Do a transformation to make the smallest negative large
+    % and the largest negatives small
+    probMin = consts.LOG_PROB_MIN;
+    probabilityOfStructure(probabilityOfStructure < probMin) = probMin;
+    probabilityOfStructure = abs(probMin) - abs(probabilityOfStructure);
+    
+    %% Selecte classes so that it represents up to .5 of the total probability
+    totalProb = sum(probabilityOfStructure);
+    probsLeft = probabilityOfStructure; % Probs we have not selected already
+    selectedProbs = 0; % Sum of selected probs
+    selectedClasses = []; % The classes we will test
+    while (selectedProbs < .5*totalProb)
+        maxProb = max(probsLeft); % Max remaining class prob
+        selectedProbs = selectedProbs + sum(maxProb); % Add to running total
+        % Add class of max prob to class list
+        classToAdd = find(probabilityOfStructure == maxProb);
+        selectedClasses = [selectedClasses classToAdd];
+        probsLeft(probsLeft == maxProb) = [];
     end
-
+   
     %% Test on SVMs
     probabilityList=[];
     for classInd = selectedClasses
@@ -39,29 +53,28 @@ for i=1:length(testImgNames)
         % TODO fix, is normalization handled?
 
         
-%         zeroedFV=bsxfun(@minus, featureVector ,classModel.normmin);
-%         
-%         
-%         featureVector=bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
-%         keyboard;
+        zeroedFV=bsxfun(@minus, featureVector ,classModel.normmin);
+        
+        
+        featureVector=bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
+        keyboard;
 
         svmLabel = ((testLabels(i) == classModel.label) * 2) - 1; % Convert label to +-1
 
         [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVector', classModel.svm);
         probabilityList = [probabilityList; decisionValues];
 
-    end
+     end
 
     %% Pick best match
     [~,indexInSelClasses] = max(probabilityList);
-    bestMatch=selectedClasses(indexInSelClasses);
-    C = updateCounts(C, testLabels(i), allClasses(bestMatch), allClasses);
+    BestMatch=selectedClasses(indexInSelClasses);
+    C = updateCounts(C, testLabels(i), allClasses(BestMatch), allClasses);
     
     if consts.DEBUG
-       disp(['Guess: ', num2str(allClasses(bestMatch)), ' (', num2str(testLabels(i)), ')']);
+       disp(['Guess: ', num2str(allClasses(BestMatch)), ' (', num2str(testLabels(i)), ')']);
     end
 end
-
 end
 
 function C = updateCounts(C, targetLabel, guess, allClasses)
