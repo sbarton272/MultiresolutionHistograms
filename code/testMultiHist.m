@@ -21,8 +21,9 @@ for i=1:length(testImgNames)
     
     % Do a transformation to make the smallest negative large
     % and the largest negatives small
-    probabilityOfStructure(probabilityOfStructure < -120) = -120;
-    probabilityOfStructure = 120 - abs(probabilityOfStructure);
+    probMin = consts.LOG_PROB_MIN;
+    probabilityOfStructure(probabilityOfStructure < probMin) = probMin;
+    probabilityOfStructure = abs(probMin) - abs(probabilityOfStructure);
     
     %% Selecte classes so that it represents up to .5 of the total probability
     totalProb = sum(probabilityOfStructure);
@@ -52,29 +53,28 @@ for i=1:length(testImgNames)
         % TODO fix, is normalization handled?
 
         
-%         zeroedFV=bsxfun(@minus, featureVector ,classModel.normmin);
-%         
-%         
-%         featureVector=bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
-%         keyboard;
+        zeroedFV=bsxfun(@minus, featureVector ,classModel.normmin);
+        
+        
+        featureVector=bsxfun(@times,zeroedFV,1./(classModel.normmax-classModel.normmin));
+        keyboard;
 
-%         svmLabel = ((testLabels(i) == classModel.label) * 2) - 1; % Convert label to +-1
-% 
-%         [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVector', classModel.svm);
-%         probabilityList = [probabilityList; decisionValues];
-% 
+        svmLabel = ((testLabels(i) == classModel.label) * 2) - 1; % Convert label to +-1
+
+        [predictedLabel, accuracy, decisionValues] = svmpredict(svmLabel, featureVector', classModel.svm);
+        probabilityList = [probabilityList; decisionValues];
+
      end
-% 
-%     %% Pick best match
-%     [~,indexInSelClasses] = max(probabilityList);
-%     BestMatch=selectedClasses(indexInSelClasses);
-%     C = updateCounts(C, testLabels(i), allClasses(BestMatch), allClasses);
-%     
-%     if consts.DEBUG
-%        disp(['Guess: ', num2str(allClasses(BestMatch)), ' (', num2str(testLabels(i)), ')']);
-%     end
-    end
 
+    %% Pick best match
+    [~,indexInSelClasses] = max(probabilityList);
+    BestMatch=selectedClasses(indexInSelClasses);
+    C = updateCounts(C, testLabels(i), allClasses(BestMatch), allClasses);
+    
+    if consts.DEBUG
+       disp(['Guess: ', num2str(allClasses(BestMatch)), ' (', num2str(testLabels(i)), ')']);
+    end
+end
 end
 
 function C = updateCounts(C, targetLabel, guess, allClasses)
