@@ -30,7 +30,7 @@ for i=1:length(testImgNames)
     probsLeft = probabilityOfStructure; % Probs we have not selected already
     selectedProbs = 0; % Sum of selected probs
     selectedClasses = []; % The classes we will test
-    while (selectedProbs < .5*totalProb)
+    while (selectedProbs < consts.NB_THRESH*totalProb)
         maxProb = max(probsLeft); % Max remaining class prob
         selectedProbs = selectedProbs + sum(maxProb); % Add to running total
         % Add class of max prob to class list
