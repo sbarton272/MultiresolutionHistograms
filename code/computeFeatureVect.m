@@ -1,29 +1,28 @@
-function featureVec = computeFeatureVect(I, structure, depth, wname,...
-    entropy, numBins, verbose)
+function featureVec = computeFeatureVect(I, depth, wname,...
+    numBins, verbose)
 
 childrenPerNode = 4;
 
 % Compute the full wavelet decomposition
-T = wptree(childrenPerNode, depth, I, wname, entropy);
-
-% I has a 1 for all existing nodes
-leaves = findLeaves(structure, childrenPerNode);
+wpt = wpdec2(I,depth,wname);
+wt = wp2wtree(wpt);
 
 % Walk through the structure vector
-numLeaves = length(leaves);
+leafNodes = leaves(wt);
+numLeaves = length(leafNodes);
 featureVec = zeros(numLeaves*numBins,1);
 if verbose
     pltN = ceil(sqrt(numLeaves));
     figure;
 end
 for i = 1:numLeaves
-    l = leaves(i);
+    l = leafNodes(i);
     
     % Tree indicies in matlab are 0-indexed
     [D, P] = ind2depo(childrenPerNode, l);
     
     % Reconstruct the image
-    image = wprcoef(T, [D P]);
+    image = wprcoef(wt, [D P]);
 
     % Get the histogram, append to feature vector
     start = numBins*(i-1)+1;
@@ -41,30 +40,3 @@ for i = 1:numLeaves
 end
 
 end
-
-function [leaves, leafStructure] = findLeaves(structure, childrenPerNode)
-
-%% Extract Leaves
-% Iter from tree bottom to top
-%   Mark parents as not leaves for all leaves
-for i = length(structure):-1:1
-    node = structure(i);
-    
-    % This is a leaf
-    if node == 1
-        % Mark parents as zeros
-        parent = floor((i-1) / childrenPerNode);
-        while (parent > 0)
-            structure(parent+1) = 0;
-            parent = floor((parent-1) / childrenPerNode);
-        end
-    end
-end
-
-%% Find leave locs
-leafStructure = structure;
-leaves = find(leafStructure) - 1; % Zero indx
-leaves = leaves';
-
-end
-
