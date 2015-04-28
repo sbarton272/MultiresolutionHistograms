@@ -1,6 +1,9 @@
 # MultiresolutionHistograms
 18-790 Project Spring 2015
 
+# Running
+Run Main.m in the code folder.
+
 # Algorithm
 
 ## Constants
